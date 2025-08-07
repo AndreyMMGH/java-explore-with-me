@@ -1,6 +1,6 @@
 services:
-  stats-service:
-    build: stats-server
+  stats-server:
+    build: stats/server
     image: stats-server-image
     container_name: stats-server-container
     ports:
@@ -23,10 +23,10 @@ services:
       - POSTGRES_USER=dbuser
       - POSTGRES_DB=statsdb
 
-  main-service:
+  ewm-service:
     build: main
     image: main-image
-    container_name: main-service-container
+    container_name: ewm-service-container
     ports:
       - "8080:8080"
     depends_on:

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class StatsDto {
+public class StatsRequestDto {
     private String app;
     private String uri;
     private String ip;

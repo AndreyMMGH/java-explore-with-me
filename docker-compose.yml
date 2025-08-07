@@ -1,7 +1,7 @@
 services:
-  stats-server:
-    build: stats/server
-    image: stats-server
+  stats-service:
+    build: stats-server
+    image: stats-server-image
     container_name: stats-server-container
     ports:
       - "9090:9090"
@@ -11,10 +11,11 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
       - SPRING_DATASOURCE_USERNAME=dbuser
       - SPRING_DATASOURCE_PASSWORD=12345
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
 
   stats-db:
     image: postgres:16.1
-    container_name: postgres
+    container_name: stats-db-postgres
     ports:
       - "6541:5432"
     environment:
@@ -22,4 +23,26 @@ services:
       - POSTGRES_USER=dbuser
       - POSTGRES_DB=statsdb
 
+  main-service:
+    build: main
+    image: main-image
+    container_name: main-service-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - main-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/maindb
+      - SPRING_DATASOURCE_USERNAME=dbuser2
+      - SPRING_DATASOURCE_PASSWORD=1234567
+
+  main-db:
+    image: postgres:16.1
+    container_name: main-db-postgres
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234567
+      - POSTGRES_USER=dbuser2
+      - POSTGRES_DB=maindb
 

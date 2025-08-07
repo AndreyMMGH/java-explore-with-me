@@ -3,9 +3,9 @@ package ru.practicum.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.StatsDto;
+import ru.practicum.StatsRequestDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.StatsView;
+import ru.practicum.view.StatsView;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.mapper.StatsMapper;
 import ru.practicum.repository.StatsRepository;
@@ -20,8 +20,8 @@ public class StatsServiceImpl implements StatsService {
     private final StatsRepository statsRepository;
 
     @Override
-    public StatsDto createHit(StatsDto statsDto) {
-        return StatsMapper.toStatsDto(statsRepository.save(StatsMapper.toStats(statsDto)));
+    public StatsRequestDto createHit(StatsRequestDto statsRequestDto) {
+        return StatsMapper.toStatsDto(statsRepository.save(StatsMapper.toStats(statsRequestDto)));
     }
 
     @Override

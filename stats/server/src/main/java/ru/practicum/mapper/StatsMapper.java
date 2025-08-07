@@ -1,13 +1,13 @@
 package ru.practicum.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.StatsDto;
+import ru.practicum.StatsRequestDto;
 import ru.practicum.model.Stats;
 
 @UtilityClass
 public class StatsMapper {
-    public static StatsDto toStatsDto(Stats stats) {
-        return new StatsDto(
+    public static StatsRequestDto toStatsDto(Stats stats) {
+        return new StatsRequestDto(
                 stats.getApp(),
                 stats.getUri(),
                 stats.getIp(),
@@ -15,13 +15,13 @@ public class StatsMapper {
         );
     }
 
-    public static Stats toStats(StatsDto statsDto) {
+    public static Stats toStats(StatsRequestDto statsRequestDto) {
         return new Stats(
                 null,
-                statsDto.getApp(),
-                statsDto.getUri(),
-                statsDto.getIp(),
-                statsDto.getTimestamp()
+                statsRequestDto.getApp(),
+                statsRequestDto.getUri(),
+                statsRequestDto.getIp(),
+                statsRequestDto.getTimestamp()
         );
     }
 }

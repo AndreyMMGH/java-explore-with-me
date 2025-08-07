@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.StatsDto;
+import ru.practicum.StatsRequestDto;
 import ru.practicum.StatsResponseDto;
 import ru.practicum.service.StatsService;
 
@@ -22,9 +22,9 @@ public class StatsController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/hit")
-    public StatsDto createHit(@RequestBody StatsDto statsDto) {
+    public StatsRequestDto createHit(@RequestBody StatsRequestDto statsRequestDto) {
         log.info("POST /hit");
-        return statsService.createHit(statsDto);
+        return statsService.createHit(statsRequestDto);
     }
 
     @GetMapping(value = "/stats")

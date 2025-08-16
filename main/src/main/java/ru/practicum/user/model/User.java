@@ -1,11 +1,12 @@
-package ru.practicum.category.model;
+package ru.practicum.user.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.user.model.User;
 
 import java.util.Objects;
 
@@ -13,24 +14,31 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "categories")
+@Table(name = "users")
 @Entity
-public class Category {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Email
+    @Size(max = 254)
+    @Column(nullable = false, unique = true, length = 254)
+    private String email;
+
+    @Column(nullable = false, length = 250)
     private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
-        Category category = (Category) o;
-        return Objects.equals(id, category.id);
+        User user = (User) o;
+        return Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(email);
     }
 }

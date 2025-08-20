@@ -1,10 +1,10 @@
 package ru.practicum.user.dto.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.user.model.User;
 import ru.practicum.user.dto.NewUserRequest;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.user.dto.UserShortDto;
+import ru.practicum.user.model.User;
 
 @UtilityClass
 public class UserMapper {

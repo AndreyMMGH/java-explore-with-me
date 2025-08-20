@@ -15,16 +15,13 @@ import java.util.Objects;
 @Table(name = "locations")
 @Entity
 public class Location {
+    @Column(nullable = false)
+    Float lat;
+    @Column(nullable = false)
+    Float lon;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    Float lat;
-
-    @Column(nullable = false)
-    Float lon;
-
 
     @Override
     public boolean equals(Object o) {

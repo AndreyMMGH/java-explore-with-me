@@ -1,6 +1,5 @@
 package ru.practicum.category.service;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.NewCategoryDto;
 

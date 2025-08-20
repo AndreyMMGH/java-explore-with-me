@@ -66,7 +66,7 @@ public class ErrorHandler {
     public ApiError handleConstraintViolationException(ConstraintViolationException e) {
         return new ApiError(
                 Collections.emptyList(),
-                "Категория с таким названием уже существует.",
+                "В базе данных нарушено ограничение целостности.",
                 "Integrity constraint has been violated.",
                 "CONFLICT",
                 LocalDateTime.now()

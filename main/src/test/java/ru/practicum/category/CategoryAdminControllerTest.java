@@ -1,4 +1,4 @@
-package ru.practicum;
+package ru.practicum.category;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

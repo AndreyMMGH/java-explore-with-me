@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.user.model.User;
 
 import java.util.Objects;
 
@@ -24,7 +23,7 @@ public class Category {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (!(o instanceof Category)) return false;
         Category category = (Category) o;
         return Objects.equals(id, category.id);
     }

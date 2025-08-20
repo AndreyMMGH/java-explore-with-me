@@ -1,4 +1,4 @@
-package ru.practicum;
+package ru.practicum.category;
 
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;

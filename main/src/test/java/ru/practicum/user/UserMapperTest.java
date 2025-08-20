@@ -36,7 +36,7 @@ class UserMapperTest {
     void shouldMapUserToUserShortDto() {
         User user = new User(2L, "Max@mail.com", "Макс");
 
-        UserShortDto result = UserMapper.userShortDto(user);
+        UserShortDto result = UserMapper.toUserShortDto(user);
 
         AssertionsForClassTypes.assertThat(result.getId()).isEqualTo(2L);
         AssertionsForClassTypes.assertThat(result.getName()).isEqualTo("Макс");

@@ -12,6 +12,7 @@ import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.dto.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
+import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 
@@ -23,8 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
     private final CategoryRepository categoryRepository;
+    private final EventRepository eventRepository;
 
     @Transactional
     @Override
@@ -41,6 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long id) {
         findCategoryById(id);
+        validateCategoryIsEmpty(id);
         categoryRepository.deleteById(id);
     }
 
@@ -84,9 +86,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new NotFoundException("Категория с данным id: " + categoryId + " не найдена"));
     }
 
-    // Продолжить реализацию после написания events
     private void validateCategoryIsEmpty(Long categoryId) {
-        log.warn("Категория с данным id: {} используется", categoryId);
-        throw new ConflictException("Категория используется");
+        boolean isUsed = eventRepository.existsByCategoryId(categoryId);
+
+        if (isUsed) {
+            log.warn("Категория с данным id: {} используется", categoryId);
+            throw new ConflictException("Категория используется");
+        }
     }
 }

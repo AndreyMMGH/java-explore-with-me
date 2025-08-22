@@ -14,8 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 public class EventRequestStatusUpdateRequest {
-    @NotNull
+    @NotNull(message = "Идентификаторы запросов обязательны")
     List<Long> requestIds;
-    @NotNull
+    @NotNull(message = "Статус обязателен")
     RequestStatus status;
 }

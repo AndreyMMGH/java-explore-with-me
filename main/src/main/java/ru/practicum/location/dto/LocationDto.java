@@ -1,4 +1,4 @@
-package ru.practicum.location;
+package ru.practicum.location.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

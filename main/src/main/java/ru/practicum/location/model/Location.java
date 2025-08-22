@@ -1,4 +1,4 @@
-package ru.practicum.location;
+package ru.practicum.location.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,13 +15,15 @@ import java.util.Objects;
 @Table(name = "locations")
 @Entity
 public class Location {
-    @Column(nullable = false)
-    Float lat;
-    @Column(nullable = false)
-    Float lon;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Float lat;
+
+    @Column(nullable = false)
+    private Float lon;
 
     @Override
     public boolean equals(Object o) {

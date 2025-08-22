@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.event.state.EventStateAction;
-import ru.practicum.location.LocationDto;
+import ru.practicum.location.dto.LocationDto;
 
 import java.time.LocalDateTime;
 

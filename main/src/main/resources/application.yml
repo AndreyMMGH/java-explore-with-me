@@ -10,7 +10,8 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6542/maindb
+#    url: jdbc:postgresql://localhost:6542/maindb
+    url: jdbc:postgresql://main-db:6542/maindb
     username: dbuser2
     password: 1234567
   jpa:
@@ -24,8 +25,10 @@ spring:
 server:
   port: 8080
 
+#client:
+#  url: http://localhost:9090
 client:
-  url: http://localhost:9090
+  url: http://stats-server:9090
 
 ---
 

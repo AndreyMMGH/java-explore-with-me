@@ -1,0 +1,63 @@
+package ru.practicum.error;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.exception.ValidationException;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
+@Slf4j
+@RestControllerAdvice
+public class ErrorHandler {
+    @ExceptionHandler({MethodArgumentNotValidException.class,
+            MissingServletRequestParameterException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .map(fe -> String.format("Field: %s. Error: %s. Value: %s",
+                        fe.getField(),
+                        fe.getDefaultMessage(),
+                        fe.getRejectedValue() != null ? fe.getRejectedValue().toString() : "null"))
+                .collect(Collectors.joining("; "));
+
+        return new ApiError(
+                Collections.emptyList(),
+                message,
+                "Incorrectly made request.",
+                "BAD_REQUEST",
+                LocalDateTime.now()
+        );
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleValidationException(ValidationException e) {
+        return new ApiError(
+                Collections.emptyList(),
+                e.getMessage(),
+                "Incorrectly made request.",
+                "BAD_REQUEST",
+                LocalDateTime.now()
+        );
+    }
+
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiError handleThrowable(Throwable e) {
+        log.error("Неожиданная ошибка: ", e);
+        return new ApiError(
+                Collections.emptyList(),
+                "Произошла непредвиденная ошибка.",
+                "Internal server error.",
+                "INTERNAL_SERVER_ERROR",
+                LocalDateTime.now()
+        );
+    }
+}

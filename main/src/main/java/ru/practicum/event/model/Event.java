@@ -70,14 +70,10 @@ public class Event {
     @Column(nullable = false, length = 120)
     private String title;
 
-    private Long views;
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Event)) return false;
-        Event event = (Event) o;
+        if (!(o instanceof Event event)) return false;
         return Objects.equals(id, event.id);
     }
 

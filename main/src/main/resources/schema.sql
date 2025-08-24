@@ -36,7 +36,6 @@ create table IF NOT EXISTS events (
     request_moderation BOOLEAN DEFAULT true,
     state VARCHAR(50) NOT NULL,
     title VARCHAR(120) NOT NULL,
-    views BIGINT,
     CONSTRAINT fk_event_category FOREIGN KEY (category_id) REFERENCES categories (id),
     CONSTRAINT fk_event_user FOREIGN KEY (initiator_id) REFERENCES users (id),
     CONSTRAINT fk_event_location FOREIGN KEY (location_id) REFERENCES locations (id),

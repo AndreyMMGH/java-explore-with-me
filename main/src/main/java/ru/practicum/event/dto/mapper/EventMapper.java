@@ -33,7 +33,7 @@ public class EventMapper {
                 event.getRequestModeration(),
                 event.getState(),
                 event.getTitle(),
-                event.getViews()
+                null
         );
     }
 
@@ -53,8 +53,7 @@ public class EventMapper {
                 null,
                 newEventDto.getRequestModeration(),
                 EventState.PENDING,
-                newEventDto.getTitle(),
-                0L
+                newEventDto.getTitle()
         );
     }
 
@@ -68,7 +67,7 @@ public class EventMapper {
                 UserMapper.toUserShortDto(event.getInitiator()),
                 event.getPaid(),
                 event.getTitle(),
-                event.getViews()
+                null
         );
     }
 }

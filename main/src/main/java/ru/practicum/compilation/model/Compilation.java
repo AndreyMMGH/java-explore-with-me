@@ -8,6 +8,7 @@ import lombok.Setter;
 import ru.practicum.event.model.Event;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -34,4 +35,16 @@ public class Compilation {
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
     private Set<Event> events = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Compilation compilation)) return false;
+        return Objects.equals(id, compilation.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

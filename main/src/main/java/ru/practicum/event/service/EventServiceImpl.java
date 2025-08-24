@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.StatsClient;
 import ru.practicum.StatsRequestDto;
+import ru.practicum.StatsResponseDto;
+import ru.practicum.StatsViewRequestDto;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.event.dto.*;
@@ -37,6 +39,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
@@ -235,10 +239,35 @@ public class EventServiceImpl implements EventService {
 
         List<Event> events = eventRepository.findAll(spec, pageable).getContent();
 
-        statsClient.createHit(new StatsRequestDto("ewm", request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
+        statsClient.createHit(new StatsRequestDto(
+                "ewm",
+                request.getRequestURI(),
+                request.getRemoteAddr(),
+                LocalDateTime.now()
+        ));
+
+        Map<String, Long> eventUriAndIdMap = events.stream()
+                .map(Event::getId)
+                .collect(Collectors.toMap(id -> "/events/" + id, Function.identity()));
+
+        List<StatsResponseDto> stats = statsClient.getStats(
+                StatsViewRequestDto.builder()
+                        .uris(new ArrayList<>(eventUriAndIdMap.keySet()))
+                        .unique(true)
+                        .build()
+        );
+
+        Map<String, Long> views = stats.stream()
+                .collect(Collectors.toMap(StatsResponseDto::getUri,
+                        StatsResponseDto::getHits
+                ));
 
         return events.stream()
-                .map(EventMapper::toEventShortDto)
+                .map(event -> {
+                    EventShortDto eventShortDto = EventMapper.toEventShortDto(event);
+                    eventShortDto.setViews(views.getOrDefault("/events/" + event.getId(), 0L));
+                    return eventShortDto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -254,10 +283,23 @@ public class EventServiceImpl implements EventService {
                 LocalDateTime.now()
         ));
 
-        event.setViews(event.getViews() + 1);
-        eventRepository.save(event);
+        Long views = statsClient.getStats(
+                        StatsViewRequestDto.builder()
+                                .uris(List.of("/events/" + id))
+                                .start(event.getPublishedOn())
+                                .end(LocalDateTime.now())
+                                .unique(true)
+                                .build()
 
-        return EventMapper.toEventFullDto(event);
+                ).stream()
+                .findAny()
+                .map(StatsResponseDto::getHits)
+                .orElse(0L);
+
+        EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
+        eventFullDto.setViews(views);
+
+        return eventFullDto;
     }
 
     @Override

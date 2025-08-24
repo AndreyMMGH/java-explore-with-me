@@ -37,8 +37,7 @@ public class EventMapperTest {
                 LocalDateTime.of(2025, 5, 3, 12, 0),
                 true,
                 EventState.PUBLISHED,
-                "Заголовок",
-                100L
+                "Заголовок"
         );
 
         EventFullDto result = EventMapper.toEventFullDto(event);
@@ -50,7 +49,6 @@ public class EventMapperTest {
         AssertionsForClassTypes.assertThat(result.getPaid()).isTrue();
         AssertionsForClassTypes.assertThat(result.getParticipantLimit()).isEqualTo(10);
         AssertionsForClassTypes.assertThat(result.getConfirmedRequests()).isEqualTo(5L);
-        AssertionsForClassTypes.assertThat(result.getViews()).isEqualTo(100L);
     }
 
     @Test
@@ -74,8 +72,7 @@ public class EventMapperTest {
                 LocalDateTime.of(2025, 5, 3, 12, 0),
                 true,
                 EventState.PUBLISHED,
-                "Заголовок",
-                100L
+                "Заголовок"
         );
 
         EventShortDto result = EventMapper.toEventShortDto(event);
@@ -85,7 +82,6 @@ public class EventMapperTest {
         AssertionsForClassTypes.assertThat(result.getTitle()).isEqualTo("Заголовок");
         AssertionsForClassTypes.assertThat(result.getPaid()).isTrue();
         AssertionsForClassTypes.assertThat(result.getConfirmedRequests()).isEqualTo(5L);
-        AssertionsForClassTypes.assertThat(result.getViews()).isEqualTo(100L);
     }
 
     @Test

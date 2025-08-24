@@ -36,17 +36,12 @@ public class EventSpecifications {
 
     public static Specification<Event> dateBetween(LocalDateTime start, LocalDateTime end) {
         LocalDateTime startDate = (start != null) ? start : LocalDateTime.now();
-        LocalDateTime endDate = end;
 
         return (root, query, cb) -> {
-            if (startDate != null && endDate != null) {
-                return cb.between(root.get("eventDate"), startDate, endDate);
-            } else if (startDate != null) {
-                return cb.greaterThanOrEqualTo(root.get("eventDate"), startDate);
-            } else if (endDate != null) {
-                return cb.lessThanOrEqualTo(root.get("eventDate"), endDate);
+            if (end != null) {
+                return cb.between(root.get("eventDate"), startDate, end);
             } else {
-                return null;
+                return cb.greaterThanOrEqualTo(root.get("eventDate"), startDate);
             }
         };
     }

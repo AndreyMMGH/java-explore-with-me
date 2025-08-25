@@ -3,12 +3,13 @@ package ru.practicum.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.StatsRequestDto;
 import ru.practicum.StatsResponseDto;
-import ru.practicum.view.StatsView;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.mapper.StatsMapper;
 import ru.practicum.repository.StatsRepository;
+import ru.practicum.view.StatsView;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,11 +20,13 @@ import java.util.List;
 public class StatsServiceImpl implements StatsService {
     private final StatsRepository statsRepository;
 
+    @Transactional
     @Override
     public StatsRequestDto createHit(StatsRequestDto statsRequestDto) {
         return StatsMapper.toStatsDto(statsRepository.save(StatsMapper.toStats(statsRequestDto)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<StatsResponseDto> getStats(LocalDateTime start,
                                            LocalDateTime end,

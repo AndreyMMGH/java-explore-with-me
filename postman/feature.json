@@ -1,0 +1,964 @@
+{
+	"info": {
+		"_postman_id": "dd5e23e8-224b-450a-887c-07c4824c86bc",
+		"name": "feature",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43654686",
+		"_collection_link": "https://andrey-9181240.postman.co/workspace/Andrey's-Workspace~5140b5a4-be80-48b9-8b9c-7d2a1b4b76a6/collection/43654686-dd5e23e8-224b-450a-887c-07c4824c86bc?action=share&source=collection_link&creator=43654686"
+	},
+	"item": [
+		{
+			"name": "1. Создать категорию",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//var timestamp = new Date().getTime();\r",
+							"var counter = parseInt(pm.environment.get(\"counter\") || \"1\")\r",
+							"\r",
+							"pm.environment.set('uniqueEmail', 'user' + counter + '@mail.ru');\r",
+							"pm.environment.set('uniqueOtherEmail', 'other_user' + counter + '@mail.ru');\r",
+							"pm.environment.set('uniqueCategory', 'Категория ' + counter);\r",
+							"pm.environment.set('uniqueEventTitle', 'Событие ' + counter);\r",
+							"pm.environment.set('uniqueUnpublishedEventTitle', 'Неопубликованное событие ' + counter);\r",
+							"pm.environment.set('uniqueCommentText', 'Комментарий ' + counter);\r",
+							"pm.environment.set('uniqueOtherCommentText', 'Другой комментарий ' + counter);\r",
+							"\r",
+							"pm.environment.set(\"counter\", counter + 1);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"categoryId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"name\": \"{{uniqueCategory}}\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/categories",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Создать пользователя",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var counter = parseInt(pm.environment.get(\"counter\") || \"1\")\r",
+							"\r",
+							"pm.environment.set('uniqueEmail', 'user' + counter + '@mail.ru');\r",
+							"pm.environment.set('uniqueOtherEmail', 'other_user' + counter + '@mail.ru');\r",
+							"pm.environment.set('uniqueCategory', 'Категория ' + counter);\r",
+							"pm.environment.set('uniqueEventTitle', 'Событие ' + counter);\r",
+							"pm.environment.set('uniqueUnpublishedEventTitle', 'Неопубликованное событие ' + counter);\r",
+							"pm.environment.set('uniqueCommentText', 'Комментарий ' + counter);\r",
+							"pm.environment.set('uniqueOtherCommentText', 'Другой комментарий ' + counter);\r",
+							"\r",
+							"pm.environment.set(\"counter\", counter + 1);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"userId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"name\": \"Макс Иванов\", \r\n    \"email\": \"{{uniqueEmail}}\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Создать событие",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус кода - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"eventId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"annotation\": \"Краткое описание, сжатый пересказ сути события\",\r\n  \"category\": {{categoryId}},\r\n  \"description\": \"Подробная информация о событии, такая как дата, время, место, формат, программа, спикеры, партнёры, цена \",\r\n  \"eventDate\": \"2025-09-01 18:00:00\",\r\n  \"location\": {\"lat\": 45.7558, \"lon\": 30.6176},\r\n  \"paid\": true,\r\n  \"participantLimit\": 50,\r\n  \"requestModeration\": false,\r\n  \"title\": \"Заголовок события\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/events",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Обновление события администратором",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Событие PUBLISHED\", function () {\r",
+							"    pm.expect(jsonData.state).to.eql(\"PUBLISHED\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"stateAction\": \"PUBLISH_EVENT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/events/{{eventId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"events",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Создать комментарий",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"commentId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"text\": \"Первый комментарий к событию.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/comments?eventId={{eventId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "eventId",
+							"value": "{{eventId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Создать другого пользователя",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var counter = parseInt(pm.environment.get(\"counter\") || \"1\")\r",
+							"\r",
+							"pm.environment.set('uniqueEmail', 'user' + counter + '@mail.ru');\r",
+							"pm.environment.set('uniqueOtherEmail', 'other_user' + counter + '@mail.ru');\r",
+							"pm.environment.set('uniqueCategory', 'Категория ' + counter);\r",
+							"pm.environment.set('uniqueEventTitle', 'Событие ' + counter);\r",
+							"pm.environment.set('uniqueUnpublishedEventTitle', 'Неопубликованное событие ' + counter);\r",
+							"pm.environment.set('uniqueCommentText', 'Комментарий ' + counter);\r",
+							"pm.environment.set('uniqueOtherCommentText', 'Другой комментарий ' + counter);\r",
+							"\r",
+							"pm.environment.set(\"counter\", counter + 1);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"otherUserId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"name\": \"Другой пользователь\", \r\n    \"email\": \"{{uniqueOtherEmail}}\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Создать другой комментарий",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"otherCommentId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"text\": \"Комментарий другого пользователя\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{otherUserId}}/comments?eventId={{eventId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{otherUserId}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "eventId",
+							"value": "{{eventId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Создать неопубликованное событие",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"unpublishedEventId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"annotation\": \"Краткое описание, сжатый пересказ сути неопубликованного события\",\r\n  \"category\": {{categoryId}},\r\n  \"description\": \"Подробная информация о неопубликованном событии, такая как дата, время, место, формат, программа, спикеры, партнёры, цена \",\r\n  \"eventDate\": \"2025-09-01 18:00:00\",\r\n  \"location\": {\"lat\": 45.7558, \"lon\": 30.6176},\r\n  \"paid\": true,\r\n  \"participantLimit\": 50,\r\n  \"requestModeration\": false,\r\n  \"title\": \"Заголовок неопубликованного события\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/events",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. Получить комментарии по событию",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Ответ — это массив\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('array');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/events/{{eventId}}/comments?from=0&size=10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"events",
+						"{{eventId}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. Получить комментарий по id события",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Идентификатор комментария соответствует запрошенному идентификатору\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get(\"commentId\")));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/events/{{eventId}}/comments/{{commentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"events",
+						"{{eventId}}",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11. Обновить комментарий по событию пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Текст комментария обновлен\", function () {\r",
+							"    pm.expect(jsonData.text).to.eql(\"Обновленный комментарий пользователем\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"text\": \"Обновленный комментарий пользователем\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/comments/{{commentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12. Удалить комментарий",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/comments/{{commentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13. Создать комментарий",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 201\", function () { pm.response.to.have.status(201); });\r",
+							"var json = pm.response.json();\r",
+							"pm.environment.set(\"commentId\", json.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"text\": \"Комментарий для админских тестов\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/comments?eventId={{eventId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "eventId",
+							"value": "{{eventId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14. Обновить комментарий администратором",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Комментарий отредактирован администратором\", function () {\r",
+							"    pm.expect(jsonData.text).to.eql(\"Админский комментарий\");\r",
+							"    pm.expect(jsonData.isEdited).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"text\": \"Админский комментарий\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/comments/{{commentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15. Поиск комментариев админом",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Ответ — это массив\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an('array');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/comments/search?text=Комментарий&from=0&size=10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"comments",
+						"search"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "Комментарий"
+						},
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16. Удалить комментарий админом",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/comments/{{commentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "17. Создать пустой комментарий",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"text\": \"\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/comments?eventId={{eventId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "eventId",
+							"value": "{{eventId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18. Обновить комментарий другого пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса — 409.\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"text\": \"Попытка обновить чужой комментарий\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/{{userId}}/comments/{{otherCommentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}",
+						"comments",
+						"{{otherCommentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19. Получить комментарии неопубликованного события",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/events/{{unpublishedEventId}}/comments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"events",
+						"{{unpublishedEventId}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20. Получить несуществующий комментарий",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Код статуса - 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/events/{{eventId}}/comments/99999",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"events",
+						"{{eventId}}",
+						"comments",
+						"99999"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

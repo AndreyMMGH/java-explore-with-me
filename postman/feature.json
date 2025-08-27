@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "dd5e23e8-224b-450a-887c-07c4824c86bc",
+		"_postman_id": "b65e8980-fdd9-4688-b904-605dacafe9e6",
 		"name": "feature",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43654686",
-		"_collection_link": "https://andrey-9181240.postman.co/workspace/Andrey's-Workspace~5140b5a4-be80-48b9-8b9c-7d2a1b4b76a6/collection/43654686-dd5e23e8-224b-450a-887c-07c4824c86bc?action=share&source=collection_link&creator=43654686"
+		"_collection_link": "https://andrey-9181240.postman.co/workspace/Andrey's-Workspace~5140b5a4-be80-48b9-8b9c-7d2a1b4b76a6/collection/43654686-b65e8980-fdd9-4688-b904-605dacafe9e6?action=share&source=collection_link&creator=43654686"
 	},
 	"item": [
 		{
@@ -959,6 +959,110 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "uniqueEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uniqueOtherEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uniqueCategory",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uniqueEventTitle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uniqueUnpublishedEventTitle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uniqueCommentText",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uniqueOtherCommentText",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "otherUserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "commentId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "otherCommentId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "unpublishedEventId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "counter",
+			"value": "0",
+			"type": "string"
 		}
 	]
 }
